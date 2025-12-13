@@ -51,6 +51,7 @@ body::before {
 }
 
 /* Navigation */
+/* Navigation */
 nav {
   position: fixed; /* sticky to top */
   top: 0;
@@ -60,7 +61,6 @@ nav {
   background: rgba(44, 62, 80, 0.85); /* same as header overlay */
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
-
 
 nav ul {
   list-style: none;
@@ -91,8 +91,85 @@ nav a:hover {
   color: #1abc9c; /* teal accent */
 }
 
+/* =============================
+   Mobile Donut Menu Toggle
+   ============================= */
 .mobile-toggle {
+  display: none; /* Hidden by default on desktop */
+  position: fixed;
+  top: 1rem;
+  right: 1.2rem;
+  width: 50px;
+  height: 50px;
+  background: #1abc9c;
+  border-radius: 50%; /* donut shape */
+  z-index: 30;
+  cursor: pointer;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  transition: background 0.3s;
+}
+
+.mobile-toggle:hover {
+  background: #16a085;
+}
+
+.mobile-toggle span {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: #ffffff;
+  position: relative;
+  transition: all 0.3s;
+}
+
+.mobile-toggle span::before,
+.mobile-toggle span::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 2px;
+  background: #ffffff;
+  transition: all 0.3s;
+}
+
+.mobile-toggle span::before { 
+  top: -6px; 
+}
+
+.mobile-toggle span::after { 
+  top: 6px; 
+}
+
+/* Toggle open state */
+.mobile-toggle.open span {
+  background: transparent;
+}
+
+.mobile-toggle.open span::before {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+.mobile-toggle.open span::after {
+  transform: rotate(-45deg) translate(5px, -5px);
+}
+
+/* Mobile menu backdrop overlay */
+.nav-backdrop {
   display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 24;
+  backdrop-filter: blur(2px);
+}
+
+.nav-backdrop.active {
+  display: block;
 }
 
 /* Site Header Title Overlaid */
@@ -195,7 +272,7 @@ nav a:hover {
   font-size: 1.05rem;
   line-height: 1.9;
   color: #34495e;
-  text-align: left;
+  text-align: justify;
 }
 
 /* Main Content */
@@ -212,7 +289,7 @@ nav a:hover {
 
 h2 {
   font-size: 1.8rem;
-  font-weight: 400;
+  font-weight: 600;
   color: #2c3e50;
   margin-bottom: 2rem;
   letter-spacing: 1px;
@@ -231,6 +308,7 @@ p {
   margin-bottom: 1.2rem;
   line-height: 1.8;
   color: #34495e;
+  text-align: justify;
 }
 
 /* Research Highlight Box */
@@ -334,56 +412,121 @@ p {
 }
 
 .project-card {
-  padding: 1.5rem;
-  background: #ecf0f1;
-  border: 1px solid #bdc3c7;
-  transition: all 0.3s;
+  padding: 2rem 1.8rem;
+  background: #ffffff;
+  border: 1px solid #dfe6e9;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.project-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(180deg, #1abc9c, #16a085);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.3s ease;
 }
 
 .project-card:hover {
-  background: #d0ece7;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transform: translateY(-8px);
+  box-shadow: 0 12px 30px rgba(26, 188, 156, 0.2);
+  border-color: #1abc9c;
+}
+
+.project-card:hover::before {
+  transform: scaleY(1);
 }
 
 .project-year {
   font-size: 0.85rem;
-  color: #95a5a6;
+  color: #ffffff;
   font-weight: 600;
-  margin-bottom: 0.5rem;
+  margin-bottom: 1rem;
   letter-spacing: 0.5px;
+  background: #1abc9c;
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  display: inline-block;
 }
 
 .project-title {
-  font-size: 1rem;
+  font-size: 1.1rem;
   font-weight: 500;
   color: #2c3e50;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.8rem;
+  line-height: 1.5;
 }
 
 .project-org {
   font-size: 0.9rem;
-  color: #34495e;
+  color: #7f8c8d;
+  font-style: italic;
 }
 
 /* Tags */
 .tag-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.8rem;
-  margin-top: 1.5rem;
+  gap: 1rem;
+  margin-top: 2rem;
+  justify-content: center;
 }
 
 .tag {
-  padding: 0.5rem 1rem;
-  background: #1abc9c;
-  color: #ffffff;
-  font-size: 0.9rem;
-  border: none;
-  transition: all 0.3s;
+  padding: 1rem 1.5rem;
+  background: #ffffff;
+  color: #2c3e50;
+  font-size: 0.95rem;
+  border: 2px solid #1abc9c;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+  position: relative;
+  overflow: hidden;
+}
+
+.tag::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #1abc9c, #16a085);
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+  z-index: -1;
 }
 
 .tag:hover {
-  background: #16a085;
+  color: #ffffff;
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(26, 188, 156, 0.3);
+  border-color: #16a085;
+}
+
+.tag:hover::before {
+  transform: translateY(0);
+}
+
+/* Teaching intro paragraph styling */
+#teaching > p:first-of-type {
+  background: #f9fdfd;
+  padding: 1.5rem 2rem;
+  border-radius: 8px;
+  border-left: 4px solid #1abc9c;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+  font-size: 1.05rem;
+  line-height: 1.9;
 }
 
 /* Memberships */
@@ -505,14 +648,49 @@ p {
     height: 350px;
   }
 
-  .site-title {
-    font-size: 2rem;
-    letter-spacing: 2px;
+  /* Mobile menu toggle visibility */
+  .mobile-toggle { 
+    display: flex; 
+  }
+
+  /* Mobile navigation menu */
+  nav ul {
+    display: none;
+    flex-direction: column;
+    background: rgba(44, 62, 80, 0.98);
+    width: 280px;
+    max-width: 85%;
+    position: fixed;
+    top: 0;
+    right: 0;
+    padding-top: 80px;
+    padding-bottom: 2rem;
+    height: auto;
+    max-height: 100vh;
+    overflow-y: auto;
+    z-index: 25;
+    border-radius: 0 0 0 12px;
+    box-shadow: -4px 0 20px rgba(0, 0, 0, 0.3);
+  }
+
+  nav ul.active { 
+    display: flex; 
+  }
+
+  nav li {
+    width: 100%;
   }
 
   nav a {
-    padding: 0.8rem 1rem;
-    font-size: 0.85rem;
+    padding: 1rem 1.5rem;
+    font-size: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: left;
+  }
+
+  .site-title {
+    font-size: 2rem;
+    letter-spacing: 2px;
   }
 
   .hero {
