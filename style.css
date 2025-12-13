@@ -155,23 +155,6 @@ nav a:hover {
   transform: rotate(-45deg) translate(5px, -5px);
 }
 
-/* Mobile menu backdrop overlay */
-.nav-backdrop {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 24;
-  backdrop-filter: blur(2px);
-}
-
-.nav-backdrop.active {
-  display: block;
-}
-
 /* Site Header Title Overlaid */
 .site-header {
   position: absolute;
@@ -650,7 +633,12 @@ p {
 
   /* Mobile menu toggle visibility */
   .mobile-toggle { 
-    display: flex; 
+    display: flex !important;
+  }
+
+  /* Hide desktop nav on mobile */
+  nav {
+    border-bottom: none;
   }
 
   /* Mobile navigation menu */
@@ -662,19 +650,20 @@ p {
     max-width: 85%;
     position: fixed;
     top: 0;
-    right: 0;
+    right: -300px;
     padding-top: 80px;
     padding-bottom: 2rem;
-    height: auto;
-    max-height: 100vh;
+    height: 100vh;
     overflow-y: auto;
     z-index: 25;
-    border-radius: 0 0 0 12px;
+    border-radius: 0;
     box-shadow: -4px 0 20px rgba(0, 0, 0, 0.3);
+    transition: right 0.3s ease;
   }
 
   nav ul.active { 
-    display: flex; 
+    display: flex !important;
+    right: 0;
   }
 
   nav li {
@@ -686,6 +675,8 @@ p {
     font-size: 1rem;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     text-align: left;
+    display: block;
+    width: 100%;
   }
 
   .site-title {

@@ -35,9 +35,6 @@
     </header>
   </div>
 
-  <!-- Mobile Menu Backdrop -->
-  <div class="nav-backdrop" id="nav-backdrop"></div>
-
   <!-- Hero Section -->
   <section class="hero" id="about">
     <div class="hero-left">
@@ -250,24 +247,26 @@
 <script>
 const toggle = document.getElementById('mobile-toggle');
 const menu = document.getElementById('nav-menu');
-const backdrop = document.getElementById('nav-backdrop');
 
 // Function to close menu
 function closeMenu() {
   toggle.classList.remove('open');
   menu.classList.remove('active');
-  backdrop.classList.remove('active');
+  // Prevent body scroll when menu is closed
+  document.body.style.overflow = '';
 }
 
 // Function to open menu
 function openMenu() {
   toggle.classList.add('open');
   menu.classList.add('active');
-  backdrop.classList.add('active');
+  // Prevent body scroll when menu is open
+  document.body.style.overflow = 'hidden';
 }
 
 // Mobile nav toggle
-toggle.addEventListener('click', () => {
+toggle.addEventListener('click', (e) => {
+  e.stopPropagation();
   if (toggle.classList.contains('open')) {
     closeMenu();
   } else {
@@ -275,12 +274,11 @@ toggle.addEventListener('click', () => {
   }
 });
 
-// Close menu when backdrop is clicked
-backdrop.addEventListener('click', closeMenu);
-
 // Close menu when a nav link is clicked
 menu.querySelectorAll('a').forEach(link => {
-  link.addEventListener('click', closeMenu);
+  link.addEventListener('click', () => {
+    closeMenu();
+  });
 });
 
 // Smooth scrolling for anchor links
@@ -292,6 +290,13 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       target.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   });
+});
+
+// Close menu on window resize if going back to desktop
+window.addEventListener('resize', () => {
+  if (window.innerWidth > 768 && menu.classList.contains('active')) {
+    closeMenu();
+  }
 });
 </script>
 
